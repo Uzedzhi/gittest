@@ -14,21 +14,13 @@ light_time = 0.2
 
 def dec2bin(value):
     return [int(element) for element in bin(value)[2:].zfill(8)]
-num = 0
-while True:
-    if (GPIO.input(9)):
-        if num == 127:
-            num = 0
-        else:
-            num += 1
-        print(num, dec2bin(num))
-        time.sleep(light_time)
-    if (GPIO.input(10)):
-        if num == 0:
-            num = 127
-        else:
-            num -= 1
 
-        print(num, dec2bin(num))
+while True:
+    for i in leds:
+        GPIO.output(i, 1)
         time.sleep(light_time)
-    GPIO.output(leds, dec2bin(num))
+        GPIO.output(i, 0)
+    for i in reversed(leds[1:-1]):
+        GPIO.output(i, 1)
+        time.sleep(light_time)
+        GPIO.output(i, 0)
